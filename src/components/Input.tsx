@@ -1,6 +1,6 @@
-import { Input as NativeBaseInput } from 'native-base'
+import { Input as NativeBaseInput,IInputProps } from 'native-base'
 
-export function Input() {
+export function Input({...rest}: IInputProps) {
   return (
     <NativeBaseInput 
       bg="gray.700"
@@ -11,6 +11,8 @@ export function Input() {
       color="white"
       fontFamily="body"
       mb={4}
+      {...rest}
+      placeholderTextColor="gray.300"
     />
   )
   

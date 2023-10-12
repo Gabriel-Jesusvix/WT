@@ -24,9 +24,11 @@ export function SignIn() {
         </Heading>
 
         <Input 
-          
+          placeholder='Email'
         />
-        <Input />
+        <Input 
+          placeholder='Senha'
+        />
       </Center>
 
     </VStack>
