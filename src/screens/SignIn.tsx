@@ -2,6 +2,7 @@ import { VStack, Image, Text, Center, Heading } from 'native-base'
 import BackgroundIMG from '@assets/background.png'
 import Logo from '@assets/logo.svg'
 import { Input } from '@components/Input'
+import { Button } from '@components/Button'
 
 export function SignIn() {
   return (
@@ -33,8 +34,14 @@ export function SignIn() {
           placeholder='Senha'
           secureTextEntry
         />
-      </Center>
 
+        <Button 
+          title='Acessar'
+        />
+      </Center>
+      <Button 
+          title='Criar conta'
+        />
     </VStack>
   )
 }
