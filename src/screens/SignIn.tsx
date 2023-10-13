@@ -4,14 +4,17 @@ import BackgroundIMG from "@assets/background.png";
 import Logo from "@assets/logo.svg";
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
+import { useNavigation } from "@react-navigation/native";
 
 export function SignIn() {
+  const { navigate } = useNavigation()
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
-      <VStack flex={1} bg="gray.700" px={10} pb={16}>
+      <VStack flex={1}  px={10} pb={16}>
         <Image
           source={BackgroundIMG}
           alt="Pessoas treinando"
