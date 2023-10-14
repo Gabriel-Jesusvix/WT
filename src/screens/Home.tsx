@@ -10,26 +10,25 @@ export function Home() {
 
   return (
     <VStack flex={1}>
-     <Header />
-
-     <FlatList
-      data={groups}
-      keyExtractor={item => item}
-      renderItem={({item}) => (
-        <GroupButton
-          name={item}
-          isActive={groupSelected === item}
-          onPress={() => setGroupSelected(item)}
-        />
-      )}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      _contentContainerStyle={{
-        px: 8,
-      }}
-      my={10}
-      maxHeight={10}
-     />
+      <Header />
+      <FlatList
+        data={groups}
+        keyExtractor={item => item}
+        renderItem={({ item }) => (
+          <GroupButton
+            name={item}
+            isActive={groupSelected === item}
+            onPress={() => setGroupSelected(item)}
+          />
+        )}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        _contentContainerStyle={{
+          px: 8,
+        }}
+        my={10}
+        maxHeight={10}
+      />
 
     </VStack>
   )
