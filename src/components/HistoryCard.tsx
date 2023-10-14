@@ -12,11 +12,24 @@ export function HistoryCard() {
       alignItems="center"
       justifyContent="space-between"
     >
-      <VStack mr={5}>
-        <Heading color="white" fontSize="md" textTransform="capitalize">Costas</Heading>
-        <Text color="white" fontSize="lg" numberOfLines={1} >Puxada frontal</Text>
+      <VStack mr={5} flex={1}>
+        <Heading
+          color="white"
+          fontSize="md"
+          textTransform="capitalize"
+          numberOfLines={1}
+        >
+
+          Costas
+        </Heading>
+        <Text
+          color="white"
+          fontSize="lg"
+          numberOfLines={1}>
+          Puxada frontal
+        </Text>
       </VStack>
-        <Text color="gray.300"  fontSize="md" >8:58</Text>
+      <Text color="gray.300" fontSize="md" >8:58</Text>
     </HStack>
   )
 }
