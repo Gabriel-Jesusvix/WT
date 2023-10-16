@@ -2,13 +2,53 @@ import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserAvatar } from "@components/UserAvatar";
-import { Center, Heading, Skeleton, Text, VStack } from "native-base";
+import * as FileSystem from 'expo-file-system';
+import * as ImagePicker from 'expo-image-picker';
+import { Center, Heading, Skeleton, Text, VStack, useToast } from "native-base";
 import React, { useState } from "react";
 import { ScrollView, TouchableOpacity } from "react-native";
 
-const PHOTO_SIZE = 33
+
 export function Profile() {
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
+  const [imageProfile, setImageProfile] = useState('https://github.com/Gabriel-Jesusvix.png');
+  const PHOTO_SIZE = 33
+  const toast = useToast()
+
+  async function handlePhotoUserSelect() {
+    setPhotoIsLoading(true)
+
+    try {
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 4],
+        allowsEditing: true,
+
+      });
+
+      if (photoSelected.canceled) {
+        return
+      }
+      if (photoSelected.assets[0].uri) {
+        const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
+        if(photoInfo.exists && (photoInfo.size / 1024 / 1024 > 5)){
+          return toast.show ({
+            title: 'Essa imagem é muito grande, escolha uma de até 5MB',
+            placement: 'top-right',
+            bgColor: 'red.500'
+          })
+        }
+        setImageProfile(photoSelected.assets[0].uri)
+        setPhotoIsLoading(false)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setPhotoIsLoading(false)
+    }
+
+  }
 
   return (
     <VStack flex={1}>
@@ -33,7 +73,7 @@ export function Profile() {
               />
             ) : (
               <UserAvatar
-                source={{ uri: 'https://github.com/Gabriel-Jesusvix.png' }}
+                source={{ uri: imageProfile }}
                 alt="Imagem do usuario"
                 size={PHOTO_SIZE}
               />
@@ -41,7 +81,7 @@ export function Profile() {
 
           }
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handlePhotoUserSelect}>
             <Text color="green.500" fontWeight="bold" fontSize="md" mt={2} mb={8}>
               Alterar foto
             </Text>
