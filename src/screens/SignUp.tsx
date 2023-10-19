@@ -2,11 +2,13 @@ import BackgroundIMG from "@assets/background.png";
 import Logo from "@assets/logo.svg";
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
+import { useAuth } from "@contexts/AuthContext";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigation } from "@react-navigation/native";
 import { api } from "@services/api";
 import { AppError } from "@utils/AppError";
 import { Center, Heading, Image, ScrollView, Text, VStack, useToast } from "native-base";
+import { useState } from "react";
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from "yup";
 
@@ -41,17 +43,20 @@ export function SignUp() {
     },
   });
   const toast = useToast()
-
+  const [isLoading, setIsLoading] = useState(false);
+  const { singIn } = useAuth()
   function handleGoBackToSignIn() {
     goBack()
   }
 
   async function handleSignUp({name, email,password,password_confirm}: FormDataProps) {
     try {
-      const response = await api.post('/users' , {
+      setIsLoading(true)
+       await api.post('/users' , {
         name, email,password,password_confirm
       })
-      console.log(response.data)
+      await singIn(email, password)
+
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError ? error.message : 'Não foi possível criar a conta. Tente novamente mais tarde'
@@ -62,6 +67,8 @@ export function SignUp() {
           bgColor: 'red.500'
         })
       }
+    } finally {
+      setIsLoading(false)
     }
 
   }
@@ -149,6 +156,7 @@ export function SignUp() {
           <Button
             title="Criar e acessar"
             onPress={handleSubmit(handleSignUp)}
+            isLoading={isLoading}
           />
 
         </Center>
