@@ -1,10 +1,12 @@
+import defaultAvatar from '@assets/userPhotoDefault.png';
+import { useAuth } from '@contexts/AuthContext';
 import { MaterialIcons } from '@expo/vector-icons';
 import { HStack, Heading, Icon, Text, VStack } from "native-base";
 import { TouchableOpacity } from 'react-native';
 import { UserAvatar } from "./UserAvatar";
 
-
 export function Header() {
+  const { user } = useAuth()
   return (
     <HStack
       bg="gray.600"
@@ -15,7 +17,7 @@ export function Header() {
     >
       <UserAvatar
         size={16}
-        source={{ uri: 'https://github.com/Gabriel-Jesusvix.png' }}
+        source={ user.avatar ? {uri: user.avatar} : defaultAvatar }
         alt="Imagem do usuario"
         mr={4}
       />
@@ -31,7 +33,7 @@ export function Header() {
           color="gray.100"
           fontSize="md"
         >
-          Gabriel Jesus.
+          {user.name}
         </Heading>
       </VStack>
 
