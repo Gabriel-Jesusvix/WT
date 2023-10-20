@@ -17,7 +17,8 @@ type RouteParams = {
   exerciseId: string;
 }
 export function Exercise() {
-  const { goBack } = useNavigation<AppNavigatorBottomRoutesProps>()
+  const { goBack, navigate } = useNavigation<AppNavigatorBottomRoutesProps>()
+  const [sendingRegister, setSendingRegister] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO);
   const route = useRoute()
@@ -48,6 +49,33 @@ export function Exercise() {
       setIsLoading(false)
     }
   }
+  async function handleExerciseHistoryRegister() {
+    try {
+      setSendingRegister(true);
+
+      await api.post('/history', { exercise_id: exerciseId });
+
+      toast.show({
+        title: 'Parabéns! Exercício registrado no seu histórico.',
+        placement: 'top',
+        bgColor: 'green.500'
+      });
+
+      navigate('history');
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError ? error.message : 'Não foi possível registrar exercício.';
+
+      toast.show({
+        title,
+        placement: 'top',
+        bgColor: 'red.500'
+      })
+    } finally {
+      setSendingRegister(false);
+    }
+  }
+
 
   useEffect(() => {
     fetchExerciseDetails();
@@ -135,6 +163,8 @@ export function Exercise() {
                 </HStack>
                 <Button
                   title='Marcar como realizado'
+                  isLoading={sendingRegister}
+                  onPress={handleExerciseHistoryRegister}
                 />
               </Box>
             </VStack>
