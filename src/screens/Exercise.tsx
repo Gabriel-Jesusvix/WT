@@ -2,17 +2,52 @@ import BodySVG from '@assets/body.svg';
 import RepetitionsSVG from '@assets/repetitions.svg';
 import SeriesSVG from '@assets/series.svg';
 import { Button } from '@components/Button';
+import { ExerciseDTO } from '@dtos/exerciseDTO';
 import { Feather } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { AppNavigatorBottomRoutesProps } from '@routes/app.routes';
-import { Box, HStack, Heading, Icon, Image, ScrollView, Text, VStack } from "native-base";
+import { api } from '@services/api';
+import { AppError } from '@utils/AppError';
+import { Box, HStack, Heading, Icon, Image, ScrollView, Text, VStack, useToast } from "native-base";
+import { useEffect, useState } from 'react';
 import { TouchableOpacity } from "react-native";
+
+type RouteParams = {
+  exerciseId: string;
+}
 export function Exercise() {
   const { goBack } = useNavigation<AppNavigatorBottomRoutesProps>()
+  const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO);
+  const route = useRoute()
+  const { exerciseId } = route.params as RouteParams
+  const toast = useToast();
+
 
   function handleGoBackScreen() {
     goBack()
   }
+  async function fetchExerciseDetails() {
+    try {
+      const response = await api.get(`/exercises/${exerciseId}`);
+
+      setExercise(response.data);
+
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError ? error.message : 'Não foi possível carregar os detalhes do exercício';
+
+      toast.show({
+        title,
+        placement: 'top',
+        bgColor: 'red.500'
+      })
+    }
+  }
+
+  useEffect(() => {
+    fetchExerciseDetails();
+  },[exerciseId])
+
   return (
     <VStack flex={1}>
         <VStack
@@ -39,7 +74,7 @@ export function Exercise() {
               fontSize="lg"
               flexShrink={1}
             >
-              Puxada frontal
+              {exercise.name}
             </Heading>
 
             <HStack
@@ -52,7 +87,7 @@ export function Exercise() {
                 fontSize="lg"
                 textTransform="capitalize"
               >
-                Costas
+                {exercise.group}
               </Text>
             </HStack>
           </HStack>
@@ -62,7 +97,7 @@ export function Exercise() {
           <Image
             w="full"
             h={80}
-            source={{ uri: 'https://www.origym.com.br/upload/remada-unilateral-3.png' }}
+            source={{ uri: `${api.defaults.baseURL}/exercise/demo/${exercise?.demo}` }}
             alt='Imagem do exercicio example'
             resizeMode='cover'
             rounded="lg"
@@ -78,13 +113,13 @@ export function Exercise() {
               <HStack>
                 <SeriesSVG />
                 <Text color="gray.200" ml={2}>
-                  3 Séries
+                {exercise.series} séries
                 </Text>
               </HStack>
               <HStack>
                 <RepetitionsSVG />
                 <Text color="gray.200" ml="2">
-                  3 Séries
+                {exercise.repetitions} repetições
                 </Text>
               </HStack>
             </HStack>
