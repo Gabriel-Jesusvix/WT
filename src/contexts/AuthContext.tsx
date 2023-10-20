@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 import { storageAuthTokenGet, storageAuthTokenRemove, storageAuthTokenSave } from '@storage/storageAuthToken';
 import { storageGetUser, storageUserRemove, storageUserSave } from '@storage/storageUser';
@@ -121,4 +121,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
       {children}
     </AuthContext.Provider>
   )
+}
+
+export function useAuth () {
+  const context = useContext(AuthContext)
+
+  return context
 }
