@@ -93,16 +93,17 @@ export function Exercise() {
           </HStack>
         </VStack>
         <ScrollView>
-        <VStack p={8} >
+        <VStack p={8}>
+        <Box rounded="lg" mb={3} overflow="hidden">
           <Image
             w="full"
             h={80}
             source={{ uri: `${api.defaults.baseURL}/exercise/demo/${exercise?.demo}` }}
-            alt='Imagem do exercicio example'
-            resizeMode='cover'
+            alt="Nome do exercício"
+            resizeMode="cover"
             rounded="lg"
-            mb={4}
           />
+        </Box>
           <Box bg="gray.600" rounded="md" pb={4} px={4}>
             <HStack
               alignItems="center"
