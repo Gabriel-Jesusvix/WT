@@ -2,7 +2,7 @@ import { BottomTabNavigationProp, createBottomTabNavigator } from '@react-naviga
 import { Exercise } from '@screens/Exercise';
 import { History } from '@screens/History';
 import { Home } from '@screens/Home';
-import { Profile } from '@screens/Profile';
+import { Profile } from "@screens/Profile";
 import { useTheme } from 'native-base';
 
 import HistoryIcon from '@assets/history.svg';

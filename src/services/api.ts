@@ -15,7 +15,7 @@ type APIInstanceProps = AxiosInstance & {
 }
 
 const api = axios.create({
-  baseURL: 'http://localhost:3333',
+  baseURL: 'http://127.0.0.1:3333',
 }) as APIInstanceProps;
 
 let failedQueued: Array<PromiseType> = [];
@@ -66,7 +66,6 @@ api.registerInterceptTokenManager = singOut => {
               request.onSuccess(data.token);
             });
 
-            console.log("TOKEN ATUALIZADO");
 
             resolve(api(originalRequestConfig));
           } catch (error: any) {
@@ -84,9 +83,7 @@ api.registerInterceptTokenManager = singOut => {
         })
 
       }
-
       singOut();
-
     }
 
     if (requestError.response && requestError.response.data) {

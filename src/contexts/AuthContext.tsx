@@ -108,7 +108,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
     return () => {
       subscribe();
     }
-  },[])
+  },[signOut])
 
   return (
     <AuthContext.Provider value={{
